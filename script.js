@@ -22,7 +22,6 @@ document.addEventListener("DOMContentLoaded", function () {
 { hard: "מַהֲלוּמָה", easy: "ההלם שאתה חווה כשאתה רואה את חשבון החשמל החודשי." }
 
     ];
-
     let playerName = "";
     let score = 0;
     let timeLeft = 25;
@@ -80,14 +79,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function nextRound() {
         clearInterval(timerInterval);
-        startTimer();
         optionsEl.innerHTML = "";
 
         let unusedWords = words.filter(w => !usedQuestions.has(w.hard));
 
         if (unusedWords.length === 0) {
-            alert("🎉 כל השאלות נענו! המשחק יסתיים.");
-            saveScore();
+            showFinalScore();
             return;
         }
 
@@ -115,6 +112,8 @@ document.addEventListener("DOMContentLoaded", function () {
             };
             optionsEl.appendChild(btn);
         });
+
+        startTimer();
     }
 
     function checkAnswer(selected, correct) {
@@ -139,6 +138,24 @@ document.addEventListener("DOMContentLoaded", function () {
         scoreEl.textContent = score;
     }
 
+    function showFinalScore() {
+        clearInterval(timerInterval);
+
+        let summaryScreen = document.createElement("div");
+        summaryScreen.classList.add("summary-screen");
+        summaryScreen.innerHTML = `
+            <h2>🎉 המשחק הסתיים!</h2>
+            <p>ניקוד סופי של ${playerName}: <strong>${score} נק'</strong></p>
+            <button id="confirm-score">אישור</button>
+        `;
+        document.body.appendChild(summaryScreen);
+
+        document.getElementById("confirm-score").addEventListener("click", function () {
+            saveScore();
+            summaryScreen.remove();
+        });
+    }
+
     function saveScore() {
         let leaderboard = JSON.parse(localStorage.getItem("leaderboard")) || [];
         leaderboard.push({ name: playerName, score });
@@ -150,13 +167,16 @@ document.addEventListener("DOMContentLoaded", function () {
     function showLeaderboard() {
         gameScreen.style.display = "none";
         leaderboardScreen.style.display = "block";
+
         let leaderboardList = document.getElementById("leaderboard-list");
-        leaderboardList.innerHTML = "";
+        leaderboardList.innerHTML = ""; 
+
         let leaderboard = JSON.parse(localStorage.getItem("leaderboard")) || [];
+        
         leaderboard.forEach(entry => {
             let li = document.createElement("li");
             li.textContent = `${entry.name}: ${entry.score} נק'`;
-            leaderboardList.appendChild
+            leaderboardList.appendChild(li);
         });
     }
 
