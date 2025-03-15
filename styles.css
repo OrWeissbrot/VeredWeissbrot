@@ -69,3 +69,27 @@ footer {
     margin-top: 20px;
     font-size: 14px;
 }
+
+.summary-screen {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    color: black;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+    text-align: center;
+}
+.summary-screen button {
+    padding: 10px 20px;
+    font-size: 18px;
+    border: none;
+    cursor: pointer;
+    background: #4CAF50;
+    color: white;
+    border-radius: 5px;
+    margin-top: 10px;
+}
+
